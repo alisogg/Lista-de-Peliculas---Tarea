@@ -1,0 +1,36 @@
+*{
+    padding: 5px;;
+    margin:0;
+    box-sizing: border-box; /*para que el tamaño de los elementos no se modifique*/
+}
+
+body{
+    margin:0;
+    display: block; /*permite que los elementos se acomoden en varias lineas*/
+    background-color: #b8e2f2;
+    justify-content: center;
+    align-items: center;
+    position: relative; /*para que el contenedor se ajuste al tamaño de los elementos*/
+    font-family: 'Roboto', sans-serif;
+}
+
+div {
+    text-align: center;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background-color: #ffef96;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+th{
+    background-color: #FFD700;
+    color: black;
+    padding: 10px;
+    text-align: center;
+}
