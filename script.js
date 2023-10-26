@@ -1,15 +1,15 @@
 $(document).ready(function() {
     if($("form").length){
-        $('#listar-btn').on('click', function() {
-            window.location.href = "index.html"; 
+        $('#listar-btn').on('click', function() { // Al hacer click en el botón de listar
+            window.location.href = "index.html";  // Redireccionamos a la página de listar
         });
         $("form").on('submit', function(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevenimos el comportamiento por defecto del formulario
 
-            if (this.checkValidity() === false) {
-                event.stopPropagation();
+            if (this.checkValidity() === false) { // Si el formulario no es válido
+                event.stopPropagation(); // Detenemos la propagación
             } else {
-                const movieData = {
+                const datosForm = { // Creamos un objeto con los datos del formulario
                     name: $('#name').val(),
                     synopsis: $('#synopsis').val(),
                     genre: $('#genre').val(),
@@ -18,48 +18,51 @@ $(document).ready(function() {
                     actors: $('#actors').val()
                 };
 
-                $.ajax({
-                    url: 'http://localhost:3000/',
-                    method: 'POST',
-                    data: JSON.stringify(movieData),
-                    contentType: 'application/json',
+                $.ajax({ // Enviamos los datos al servidor
+                    url: 'http://localhost:3000/movies',
+                    method: 'POST', // Siempre que se envíen datos al servidor, se usa POST
+                    data: JSON.stringify(datosForm), // Convertimos el objeto a un string
+                    contentType: 'application/json', // Especificamos el tipo de contenido que se está enviando
                     success: function(response) {
-                        alert('Película registrada con éxito!');
-                        $("form")[0].reset();
+                        alert('Se ha agregado tu película.'); // Si la solicitud es exitosa, mostramos un mensaje
+                        $("form")[0].reset(); // Reseteamos el formulario
                     },
                     error: function(error) {
                         console.error('ERROR:', error);
-                        alert('Al registrar la película.');
+                        alert('ERROR. Al registrar la película.');
                     }
                 });
             }
-            $(this).addClass('was-validated');
+            $(this).addClass('was-validated'); // Agregamos la clase was-validated para mostrar los mensajes de validación
         });
     } else { 
-        $('#add-btn').on('click', function() {
-            window.location.href = "agregar.html";
+        $('#add-btn').on('click', function() { // Al hacer click en el botón de agregar
+            window.location.href = "agregar.html"; // Redireccionamos a la página de agregar
         });
         $.ajax({
-            url: 'http://localhost:3000/', // Asegúrate de que esta sea la URL correcta para obtener los datos
-            method: 'GET',
+            url: 'http://localhost:3000/movies', // Asegúrate de que esta sea la URL correcta para obtener los datos
+            method: 'GET', // Siempre que se obtengan datos del servidor, se usa GET
             success: function(response) {
-                response.forEach(function(movie) {
-                    const movieRow = `
+                if (response.length === 0) {
+                    $('#pelis-lista').html('<p>NO hay películas disponibles.</p>'); // Si no hay películas, mostramos un mensaje
+                } else {
+                response.forEach(function(movies) { // Recorremos el arreglo de películas
+                    const agregarInfo = `
                         <tr>
-                            <td>${movie.name}</td>
-                            <td>${movie.synopsis}</td>
-                            <td>${movie.genre}</td>
-                            <td>${movie.duration}</td>
-                            <td>${movie.director}</td>
-                            <td>${movie.actors}</td>
+                            <td>${movies.name}</td>
+                            <td>${movies.synopsis}</td>
+                            <td>${movies.genre}</td>
+                            <td>${movies.duration}</td>
+                            <td>${movies.director}</td>
+                            <td>${movies.actors}</td>
                         </tr>
                     `;
-                    $('#pelis').append(movieRow);
+                    $('#pelis').append(agregarInfo); // Agregamos la fila a la tabla
                 });
-            },
+            }
+        },
             error: function(error) {
-                console.error('ERROR:', error);
-                alert('Hubo un error al cargar las películas. Inténtalo de nuevo.');
+                console.error('ERROR:', error); // Si hay algún error en la solicitud, se mostrará aquí
             }
         });
     }

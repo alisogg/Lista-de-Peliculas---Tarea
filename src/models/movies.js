@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const movieSchema = new mongoose.Schema({
+const movieSchema = new mongoose.Schema({ // Definimos el esquema de la colección
     name: { type: String, required: true },
     synopsis: { type: String, required: true },
     genre: { type: String, required: true },
@@ -9,6 +9,4 @@ const movieSchema = new mongoose.Schema({
     actors: { type: String }
 });
 
-const Movie = mongoose.model('Movie', movieSchema);
-
-module.exports = Movie;
+module.exports = mongoose.model('Movie', movieSchema); // Exportamos el modelo de la colección

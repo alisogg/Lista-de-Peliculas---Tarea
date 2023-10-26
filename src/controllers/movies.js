@@ -1,39 +1,27 @@
 const Movie = require('../models/movies');
-const { response } = require('express');
 
-class MovieController {
-    async getMovies(req,res) {
-        try {
-            const movies = await Movie.find();
-            res.json(movies);
-        } catch(err) {
-            res.status(500).send(err);
-        }
+exports.getMovies = async (req, res) => { // Obtener todas las películas
+    try {
+        const movies = await Movie.find(); // Buscamos todas las películas
+        res.json(movies);
+    } catch (err) {
+        res.status(500).json({ message: err.message }); // Si hay un error, lo mostramos
     }
-    async createMovie(req,res) {
-        const movie = new Movie(req.body);
-        try {
-            await movie.save();
-            res.status(201).send(movie);
-        } catch (err) {
-            res.status(400).send(err);
-        }
-    }
+};
 
-    async deleteMovie(req, res) {
-        const { id } = req.body;
-        try {
-            const deletedMovie = await Movie.findByIdAndRemove(id);
-    
-            if (!deletedMovie) {
-                return res.status(404).json({ message: 'La película no existe' });
-            }
-    
-            res.json({ message: 'Película eliminada con éxito' });
-        } catch (err) {
-            res.status(500).send(err);
-        }
+exports.createMovie = async (req, res) => { // Crear una película
+    const movie = new Movie({ // Creamos un nuevo objeto Movie con los datos del formulario
+        name: req.body.name,
+        synopsis: req.body.synopsis,
+        genre: req.body.genre,
+        duration: req.body.duration,
+        director: req.body.director,
+        actors: req.body.actors
+    });
+    try {
+        const newMovie = await movie.save(); // Guardamos la película en la base de datos
+        res.status(201).json(newMovie); // Si se guarda correctamente, mostramos el objeto guardado
+    } catch (err) {
+        res.status(400).json({ message: err.message }); // Si hay un error, lo mostramos
     }
-}
-
-module.exports = new MovieController();
+};

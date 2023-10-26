@@ -26,6 +26,7 @@ table{
     align-items: center;
     justify-content: center;
     text-align: center;
+    border: 1px solid #FFD700;
 }
 
 th{
