@@ -4,7 +4,6 @@ const Movie = require('../models/movies')
     class MoviesController {
         ver(req,res){
             const id = req.params.id;
-            const peliculas  = ids[id];
             if(peli){
                 res.send(peli);
             }else{
@@ -13,12 +12,11 @@ const Movie = require('../models/movies')
         }
 
         listar(req, res){
-            Movie.find().then(response => {
-                console.log('Respuesta: ', response);
+            Movie.find({}).then(response => {
                 res.send(response);
             }).catch(err => {
                 res.sendStatus(500);
-                console.log('Error al ver las peliculas: ', err);
+                console.log('Error al listar peliculas: ', err);
             });
         }
     

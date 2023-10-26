@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    if($("form").length){
-        $('#listar-btn').on('click', function() {
+    if($("form").length){ // Si existe el formulario, entonces se está en la página de agregar
+        $('#listar-btn').on('click', function() { // Si se da click en el botón de regresar, entonces se regresa a la página principal
             window.location.href = "index.html";
         });
         $("form").on('submit', function(event) {
@@ -19,7 +19,7 @@ $(document).ready(function() {
                 };
 
                 $.ajax({
-                    url: 'http://localhost:3000/movies?token=123', //URL de donde se obtendrán los datos
+                    url: 'http://localhost:3000/movies', //URL de donde se obtendrán los datos
                     method: 'POST',
                     data: JSON.stringify(movieData),
                     contentType: 'application/json',
@@ -36,11 +36,11 @@ $(document).ready(function() {
             $(this).addClass('was-validated');
         });
     } else {
-        $('#link').on('click', function() {
+        $('#add-btn').on('click', function() {
             window.location.href = "agregar.html";
         });
         $.ajax({
-            url: 'http://localhost:3000/movies?token=123', //URL de donde se obtendrán los datos
+            url: 'http://localhost:3000/movies', //URL de donde se obtendrán los datos
             method: 'GET',
             success: function(response) {
                 let cont = 0;
