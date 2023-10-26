@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const rutas = require('./routes');
+const rutas = require('./routes/index');
 
 const app = express();
 
@@ -8,7 +8,8 @@ app.get('', (req,res) => {
     res.send('api works!');
 })
 
-app.use('', rutas);
+app.use(rutas);
+app.use(express.static(__dirname)); // __dirname es la carpeta raíz del proyecto
 
 const mongoUrl = 'mongodb+srv://temp_user:temp_user123@cluster0.i6i5esg.mongodb.net/PELICULAS?retryWrites=true&w=majority';
 

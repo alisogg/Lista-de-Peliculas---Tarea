@@ -14,12 +14,11 @@
     </nav>
     <div>
         <a id="listar-btn" href="index.html" class="btn btn-primary btn-lg">Listar</a>
-        <a href="agregar.html" class="btn btn-primary btn-lg">Agregar</a>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form>
+                <form id = "info-pelis">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="">
@@ -44,10 +43,13 @@
                         <label for="actor" class="form-label">Actor(es)</label>
                         <input type="text" class="form-control" id="actor" name="actor" placeholder="">
                     </div>
-                    <div><button type="submit" class="btn btn-warning">+</button></div>
+                    <div><button id="crear" type="submit" class="btn btn-warning">+</button></div>
                 </form>
             </div>
         </div>
+    </div>
         <script src="script.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317" integrity="sha512-euoFGowhlaLqXsPWQ48qSkBSCFs3DPRyiwVu3FjR96cMPx+Fr+gpWRhIafcHwqwCqWS42RZhIudOvEI+Ckf6MA==" data-cf-beacon="{&quot;rayId&quot;:&quot;81bdf8b498ed4764&quot;,&quot;version&quot;:&quot;2023.10.0&quot;,&quot;token&quot;:&quot;cd0b4b3a733644fc843ef0b185f98241&quot;}" crossorigin="anonymous"></script>
 </body>
 </html>

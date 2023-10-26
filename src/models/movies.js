@@ -1,12 +1,14 @@
-const {model , Schema} = require('mongoose');
+const mongoose = require('mongoose');
 
-const movieSchema = new Schema({
-    name: { type: String, require: true },
-    synopsis: { type: String, require: true },
-    genre: { type: String, require: true},
-    duration: { type: Number, require: true},
-    director: { type: String, requiere: true},
-    actors: [String]
+const movieSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    synopsis: { type: String, required: true },
+    genre: { type: String, required: true },
+    duration: { type: Number, required: true },
+    director: { type: String, required: true },
+    actors: { type: String }
 });
 
-module.exports = model('movies', movieSchema);
+const Movie = mongoose.model('Movie', movieSchema);
+
+module.exports = Movie;

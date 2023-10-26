@@ -1,7 +1,8 @@
-const router = require('express').Router();
-const moviesController = require('./../src/controllers/movies');
+const express = require('express');
+const router = express.Router();
+const movieController = require('./../src/controllers/movies'); // importamos el controlador
 
-router.get('/movies',moviesController.listar);
-router.post('/movies', moviesController.crear);
+router.get('/movies', movieController.getMovies); // http://localhost:3000/movies
+router.post('/movies', movieController.createMovie); 
 
 module.exports = router;
