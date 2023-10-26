@@ -1,28 +1,39 @@
-const Movie = require('./../models/movies');
+const Movie = require('../models/movies');
+const { response } = require('express');
 
-exports.getMovies = async (req, res) => {
-    try {
-        const movies = await Movie.find();
-        res.json(movies);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+class MovieController {
+    async getMovies(req,res) {
+        try {
+            const movies = await Movie.find();
+            res.json(movies);
+        } catch(err) {
+            res.status(500).send(err);
+        }
     }
-};
-
-exports.createMovie = async (req, res) => {
-    const movie = new Movie({
-        name: req.body.name,
-        synopsis: req.body.synopsis,
-        genre: req.body.genre,
-        duration: req.body.duration,
-        director: req.body.director,
-        actors: req.body.actors
-    });
-
-    try {
-        const newMovie = await movie.save();
-        res.status(201).json(newMovie);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
+    async createMovie(req,res) {
+        const movie = new Movie(req.body);
+        try {
+            await movie.save();
+            res.status(201).send(movie);
+        } catch (err) {
+            res.status(400).send(err);
+        }
     }
-};
+
+    async deleteMovie(req, res) {
+        const { id } = req.body;
+        try {
+            const deletedMovie = await Movie.findByIdAndRemove(id);
+    
+            if (!deletedMovie) {
+                return res.status(404).json({ message: 'La película no existe' });
+            }
+    
+            res.json({ message: 'Película eliminada con éxito' });
+        } catch (err) {
+            res.status(500).send(err);
+        }
+    }
+}
+
+module.exports = new MovieController();

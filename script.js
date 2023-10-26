@@ -1,24 +1,50 @@
-document.addEventListener("DOMContentLoaded", function() { // Espera a que el DOM esté cargado
-    if(document.getElementById("pelis-lista")) { // Si estamos en la página de lista de películas
-        fetchMovies(); // Cargamos las películas
-    }
+$(document).ready(function() {
+    if($("form").length){
+        $('#listar-btn').on('click', function() {
+            window.location.href = "index.html"; 
+        });
+        $("form").on('submit', function(event) {
+            event.preventDefault();
 
-    const form = document.getElementById("info-pelis"); // Si estamos en la página de crear película
-    if (form) { // Si existe el formulario
-        form.addEventListener("submit", createMovie); // Agregamos el evento submit
-    }
-});
-
-function fetchMovies() { // Función para cargar las películas
-    fetch('/movies')
-        .then(response => response.json()) // Convertimos la respuesta a JSON
-        .then(data => {
-            let html = '';
-            if (data.length === 0) {
-                html = '<p>No hay películas disponibles.</p>';
+            if (this.checkValidity() === false) {
+                event.stopPropagation();
             } else {
-                data.forEach(movie => {
-                    html += `
+                const movieData = {
+                    name: $('#name').val(),
+                    synopsis: $('#synopsis').val(),
+                    genre: $('#genre').val(),
+                    duration: $('#duration').val(),
+                    director: $('#director').val(),
+                    actors: $('#actors').val()
+                };
+
+                $.ajax({
+                    url: 'http://localhost:3000/',
+                    method: 'POST',
+                    data: JSON.stringify(movieData),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        alert('Película registrada con éxito!');
+                        $("form")[0].reset();
+                    },
+                    error: function(error) {
+                        console.error('ERROR:', error);
+                        alert('Al registrar la película.');
+                    }
+                });
+            }
+            $(this).addClass('was-validated');
+        });
+    } else { 
+        $('#add-btn').on('click', function() {
+            window.location.href = "agregar.html";
+        });
+        $.ajax({
+            url: 'http://localhost:3000/', // Asegúrate de que esta sea la URL correcta para obtener los datos
+            method: 'GET',
+            success: function(response) {
+                response.forEach(function(movie) {
+                    const movieRow = `
                         <tr>
                             <td>${movie.name}</td>
                             <td>${movie.synopsis}</td>
@@ -28,50 +54,13 @@ function fetchMovies() { // Función para cargar las películas
                             <td>${movie.actors}</td>
                         </tr>
                     `;
+                    $('#pelis').append(movieRow);
                 });
+            },
+            error: function(error) {
+                console.error('ERROR:', error);
+                alert('Hubo un error al cargar las películas. Inténtalo de nuevo.');
             }
-            document.getElementById("pelis-lista").innerHTML = html;
         });
-}
-
-function createMovie(event) { // Función para crear una película
-    event.preventDefault(); // Prevenimos el comportamiento por defecto del formulario
-
-    const movieData = { // Creamos un objeto con los datos de la película
-        name: document.getElementById("pelicula").value,
-        synopsis: document.getElementById("sinopsis").value,
-        genre: document.getElementById("genero").value,
-        duration: document.getElementById("duracion").value,
-        director: document.getElementById("director").value,
-        actors: document.getElementById("actor").value
-    };
-
-    fetch('/movies', { // Hacemos la petición POST
-        method: 'POST',
-        body: JSON.stringify(movieData),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data._id) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Listo',
-                text: 'Película creada.',
-                confirmButtonText: 'Ok'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "index.html";
-                }
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'ERROR',
-                text: 'Al crear la película.'
-            });
-        }
-    });
-}
+    }
+});
